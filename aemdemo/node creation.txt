@@ -1,0 +1,28 @@
+HOW TO  CREATE REPOSITORY NODES THOROUGH JAVA IN ADOBE EXPERIENCE MANAGER(AEM)
+We can create the repository nodes inAdobe Experience Manager(AEM) through Java API , the below code snippet will help us to create the nodes in Adobe Experience Manager(AEM).
+
+private static final String BASE_PATH = "/etc/commerce/products"; // the folder under which the nodes should be created
+
+//Get the Resource resolver from request - Creating the node through Servlet
+ResourceResolver resolver = request.getResourceResolver();
+
+//Get the Resource resolver through resolver factory - Creating the node through Service
+@Reference
+private ResourceResolverFactory resolverFactory;//Get the resolverFactory reference in the service
+
+ResourceResolver resolver = resolverFactory.getAdministrativeResourceResolver(null);//Get the resolver
+
+//Get the session
+Session session = resolver.adaptTo(Session.class);
+
+//Create the Node
+Node node = JcrUtil.createPath(BASE_PATH+<<Node Name>>, JcrConstants.NT_UNSTRUCTURED, session);
+
+//Set the required properties
+node.setProperty("name", "sample");
+node.setProperty("description", "sample");
+
+//Save the session
+session.save();
+
+While creating the NT_UNSTRUCTURED node make sure the parent folder is sling:folder, the node will not be created if the parent node is of type nt::folder.
